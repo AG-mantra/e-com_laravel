@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Session;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::get('/login', function () {
-    return view('login');
+    return view('user.login');
 });
+
+Route::get('/logout', function () {
+    Session::forget('user');
+    return redirect('/login');
+});
+
+Route::post('/login', [UserController::class, 'login']);
+
+Route::get('/', [ProductController::class, 'index']);
+
+Route::get('/cart', [ProductController::class, 'cart']);
+
+Route::get('detail/{id}', [ProductController::class, 'detail']);
+
+Route::post('add_to_cart', [ProductController::class, 'addToCart']);
+
